@@ -1,0 +1,56 @@
+@charset "UTF-8";
+
+:root {
+    --borda: #A0522D;
+    --fundo1: #C19A6B;
+    --fundo2: #D2B48C;
+    --texto1: #8B4513;
+    --fundo_input: #F5F5DC;
+    --botao: #8B4513;
+}
+
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    font-family: 'Courier New', Courier, monospace;
+    color: var(--texto1);
+}
+
+div#formulario {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-items: space-evenly;
+    margin: 8vh auto 0px auto;
+    padding: 30px;
+    background-color: var(--fundo1);
+    width: 500px;
+    height: 560px;
+}
+
+label {
+    font-size: 1.6em;
+    font-weight: bold;
+}
+
+input {
+    width: 300px;
+    height: 30px;
+    border: 1px solid var(--borda);
+    background-color: var(--fundo_input);
+}
+
+input[type=submit] {
+    background-color:var(--botao);
+    margin-left: 42px;
+    transition-duration: 0.7s;
+}
+
+
+
+form {
+    margin: 0px auto;
+}
+
