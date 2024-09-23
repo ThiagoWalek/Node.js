@@ -8,15 +8,6 @@ const app = express();
 const __dirname = path.resolve(path.dirname(''));
 let offers = [];
 
-// Carregar dados do data.json
-fs.readFile('data.json', 'utf8', (err, data) => {
-    if (err) {
-        console.error("Erro ao ler o arquivo:", err);
-        return;
-    }
-    offers = JSON.parse(data).offers || []; // Certifique-se de que offers seja um array
-});
-
 // Middleware
 app.use(express.static(path.join(__dirname, '')));
 app.use(express.json());
@@ -92,10 +83,10 @@ app.post("/ofertas", async (req, res) => {
     const newOffer = await prisma.offer.create({
         data: {
             courseName,
-            level: nivel, // Corrigido para 'level'
-            kind: tipo, // Corrigido para 'kind'
+            level: nivel,
+            kind: tipo,
             fullPrice,
-            offeredPrice: offerPrice // Corrigido para 'offeredPrice'
+            offeredPrice: offerPrice
         }
     });
 
@@ -109,17 +100,20 @@ app.get("/relatorio", (req, res) => {
 });
 
 // Endpoint para carregar ofertas do data.json e cadastrar no banco de dados
+// Endpoint para carregar ofertas do data.json e cadastrar no banco de dados
 app.post("/carregar-ofertas", async (req, res) => {
     try {
         const data = req.body; // O JSON deve vir diretamente do corpo da requisição
 
-        // Verifique se 'offers' existe no JSON
-        if (!data.offers || !Array.isArray(data.offers)) {
-            return res.status(400).send("Formato inválido. O JSON deve conter um array 'offers'.");
-        }
+        // Lê o arquivo apenas quando o botão de enviar for clicado
+        const fileData = await fs.promises.readFile('data.json', 'utf8');
+        const fileOffers = JSON.parse(fileData).offers || [];
+
+        // Adiciona as ofertas lidas do arquivo à variável offers
+        offers.push(...fileOffers);
 
         // Cadastra cada oferta no banco de dados
-        for (const offer of data.offers) {
+        for (const offer of fileOffers) {
             await prisma.offer.create({
                 data: {
                     courseName: offer.courseName,
